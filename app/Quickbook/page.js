@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { URL_ENDPOINT } from '@/utils/endpoint';
+import { useSearchParams } from 'next/navigation'
 
 const TokenDetails = ({ token }) => {
     const [showFullToken, setShowFullToken] = useState(false);
@@ -67,11 +68,12 @@ const TokenDetails = ({ token }) => {
 
 
 
-export default function Page(slug) {
+export default function Page() {
 
+    const slug = useSearchParams();
     const [access_token, setAccess_token] = useState([])
     const request = async () => {
-        const res = await fetch(`${URL_ENDPOINT}/oauth2/callback?code=${slug.searchParams.code}`, {
+        const res = await fetch(`${URL_ENDPOINT}/oauth2/callback?code=${slug.get('code')}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
