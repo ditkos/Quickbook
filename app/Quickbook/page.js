@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { URL_ENDPOINT } from '@/utils/endpoint';
 
 const TokenDetails = ({ token }) => {
     const [showFullToken, setShowFullToken] = useState(false);
@@ -70,7 +71,7 @@ export default function Page(slug) {
 
     const [access_token, setAccess_token] = useState([])
     const request = async () => {
-        const res = await fetch(`http://localhost:3000/api/oauth2/callback?code=${slug.searchParams.code}`, {
+        const res = await fetch(`${URL_ENDPOINT}/oauth2/callback?code=${slug.searchParams.code}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
