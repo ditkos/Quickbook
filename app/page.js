@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import { SiQuickbooks } from "react-icons/si";
 import { useRouter } from 'next/navigation'
 import { URL_BASE } from '@/utils/endpoint';
+import { useSearchParams } from 'next/navigation'
 
 const Home = (slug) => {
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [params, setParams] = useState({
     client_id: '',
@@ -15,22 +17,22 @@ const Home = (slug) => {
   })
 
   useEffect(() => {
-    if (slug) {
-      setParams((prev) => ({
-        ...prev,
-        client_id: slug.searchParams.client_id,
-        client_secret: slug.searchParams.client_secret
-      }));
+    const clientId = searchParams.get('client_id');
+    const clientSecret = searchParams.get('client_secret');
+  
+    if (clientId && clientSecret) {
+      setParams({
+        client_id: clientId.toString(),
+        client_secret: clientSecret.toString()
+      });
     }
-  }, [slug])
+  }, [searchParams]);
 
   const isButtonDisabled = params.client_id === '' || params.client_secret === '';
   const Send = async () => {
     const queryString = new URLSearchParams(params).toString(); // Convierte el objeto en una cadena de consulta
     router.push(`${URL_BASE}/api/oauth2?${queryString}`)
   }
-
-
 
   return (
     <div className='flex flex-col justify-center items-center h-screen gap-2'>

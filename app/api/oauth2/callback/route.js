@@ -1,6 +1,5 @@
 // pages/api/oauth2/callback.js
 import { stringify } from 'querystring';
-import { redirect } from 'next/navigation'
 import { Buffer } from 'buffer';
 import { cache } from '../../../../utils/redis'
 import { URL_ENDPOINT } from '@/utils/endpoint';
