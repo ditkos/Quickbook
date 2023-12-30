@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { SiQuickbooks } from "react-icons/si";
 import { useRouter } from 'next/navigation'
+import { URL_BASE } from '@/utils/endpoint';
 
 const Home = (slug) => {
 
@@ -23,12 +24,10 @@ const Home = (slug) => {
     }
   }, [slug])
 
-  const base_url = 'http://localhost:3000';
-
   const isButtonDisabled = params.client_id === '' || params.client_secret === '';
   const Send = async () => {
     const queryString = new URLSearchParams(params).toString(); // Convierte el objeto en una cadena de consulta
-    router.push(`${base_url}/api/oauth2?${queryString}`)
+    router.push(`${URL_BASE}/api/oauth2?${queryString}`)
   }
 
 

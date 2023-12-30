@@ -3,7 +3,7 @@ import { stringify } from 'querystring';
 import { redirect } from 'next/navigation'
 import { Buffer } from 'buffer';
 import { cache } from '../../../../utils/redis'
-
+import { URL_ENDPOINT } from '@/utils/endpoint';
 
 
 export async function GET(request) {
@@ -18,7 +18,7 @@ export async function GET(request) {
     const query = { code, state, realmId }
 
     // Intercambio de código por un token de acceso
-    const redirectUri = 'http://localhost:3000/Quickbook/';
+    const redirectUri = `${URL_ENDPOINT}/Quickbook/`;
     const base64 = "Basic " + Buffer.from(await cache.get('client_id') + ":" + await cache.get('client_secret')).toString('base64');
    
 

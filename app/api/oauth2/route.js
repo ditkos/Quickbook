@@ -3,7 +3,7 @@
 import { stringify } from 'querystring';
 import { redirect } from 'next/navigation'
 import { cache } from '../../../utils/redis'
-
+import { URL_BASE } from '@/utils/endpoint';
 
 export async function GET(request) {
   const url = new URL(request.url);
@@ -18,7 +18,7 @@ export async function GET(request) {
 
 
   // Debe coincidir con la configuración en el servidor de autorización
-  const redirectUri = 'http://localhost:3000/Quickbook/'; // Debe coincidir con la configuración en el servidor de autorización
+  const redirectUri = `${URL_BASE}/Quickbook/`; // Debe coincidir con la configuración en el servidor de autorización
 
   const authorizationUrl = 'https://appcenter.intuit.com/connect/oauth2?' +
     stringify({
