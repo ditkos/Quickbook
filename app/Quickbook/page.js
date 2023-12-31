@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { URL_ENDPOINT } from '@/utils/endpoint';
 import { useSearchParams } from 'next/navigation'
 
-const TokenDetails = ({ token }) => {
+const TokenDetails = ({ token, realm_id }) => {
     const [showFullToken, setShowFullToken] = useState(false);
 
     const truncatedToken = token && token.access_token ? token.access_token.slice(0, 100) + (token.access_token.length > 100 ? '...' : '') : '';
@@ -20,18 +20,18 @@ const TokenDetails = ({ token }) => {
         return formattedDate;
     };
 
-    const copyToClipboard = () => {
+    const copyToClipboard = (item) => {
         if (!token) {
-          alert('Token is not available');
+            alert('Token is not available');
         } else {
-          const dataString = `ACCESS_TOKEN='${token.access_token}'\nREFRESH_TOKEN='${token.refresh_token}'`;
-          navigator.clipboard.writeText(dataString).then(() => {
-            alert('Tokens copied to clipboard!');
-          }).catch((error) => {
-            console.error('Error copying to clipboard:', error);
-          });
+            const dataString = item
+            navigator.clipboard.writeText(dataString).then(() => {
+                alert('Tokens copied to clipboard!');
+            }).catch((error) => {
+                console.error('Error copying to clipboard:', error);
+            });
         }
-      };
+    };
 
     const toggleShowMore = () => {
         setShowFullToken((prevShowFullToken) => !prevShowFullToken);
@@ -43,7 +43,6 @@ const TokenDetails = ({ token }) => {
             <div className='flex flex-col justify-center items-center h-screen'>
                 <h2 className='mb-4'>Detalles del Token de Acceso</h2>
                 <div className='flex items-center gap-2'>
-                    <button onClick={copyToClipboard}>Copy token</button>
                     <button onClick={toggleShowMore}>{showFullToken ? 'Show Less' : 'Show More'}</button>
                 </div>
                 {showFullToken ? (
@@ -53,7 +52,13 @@ const TokenDetails = ({ token }) => {
                                 ...token,
                                 access_token: truncatedToken,
                                 x_refresh_token_expires_in: formatExpirationDate(token.x_refresh_token_expires_in),
-                            }, null, 2)}</pre>
+                            }, null, 2)}
+                        </pre>
+                        <div className='flex flex-col items-center gap-3'>
+                            <button className='text-black' onClick={() => { copyToClipboard(token.access_token) }}>Access_token_Copy</button>
+                            <button className='text-black' onClick={() => { copyToClipboard(token.refresh_token) }}>Refresh_token_Copy</button>
+                            <button className='text-black' onClick={() => { copyToClipboard(realm_id) }}>Realm_id_Copy</button>
+                        </div>
                     </div>
                 ) : (
                     <div>
@@ -97,7 +102,7 @@ export default function Page() {
                     Get Authorization
                 </button>
             </div>
-            <TokenDetails token={access_token} />
+            <TokenDetails token={access_token} realm_id={slug.get('realmId')} />
         </>
     )
 }
