@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { URL_BASE } from '@/utils/endpoint';
 import { useSearchParams } from 'next/navigation'
 
-const Home = (slug) => {
+const Home = () => {
 
   const router = useRouter();
   const searchParams = useSearchParams();
